@@ -1,0 +1,48 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorTheme</item>
+        <item name="colorPrimaryDark">@color/colorTheme</item>
+        <item name="colorAccent">@color/colorTheme</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="CustomDialog" parent="android:style/Theme.DeviceDefault.Light.Dialog">
+        <!-- <item name="listPreferredItemPaddingLeft">48dip</item>
+        <item name="listPreferredItemPaddingRight">48dip</item>-->
+        <!--<item name="listPreferredItemPaddingStart">48dip</item>-->
+        <!--<item name="listPreferredItemPaddingEnd">48dip</item>-->
+        <item name="android:windowIsTranslucent">true</item><!--半透明-->
+        <item name="android:windowFrame">@null</item><!--边框 -->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上 -->
+        <item name="android:windowNoTitle">true</item><!--无标题 -->
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+<!--    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabIndicatorHeight">3dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabBackground">@color/colorTheme</item>
+        <item name="tabTextAppearance">@style/AppTheme.TextAppearance.Design.Tab</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Design.Tab" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/articleListItem_press</item>
+        <item name="android:textStyle">bold</item>
+    </style>-->
+
+</resources>

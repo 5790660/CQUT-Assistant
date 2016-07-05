@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorTheme">#5263FB</color>
+
+    <color name="articleListItem_press">#DEDCDD</color>
+    <color name="articleListItem_normal">#FAFAFA</color>
+    <color name="articleListBackground">#EEEEEE</color>
+
+    <color name="color_scheme_1">#6DCAEC</color>
+    <color name="color_scheme_2">#33B5E5</color>
+    <color name="color_scheme_3">#24ADDE</color>
+    <color name="color_scheme_4">#16A5D7</color>
+
+    <color name="color_news_1">#5263FB</color>
+    <color name="color_news_2">#009586</color>
+    <color name="color_news_3">#0199E2</color>
+    <color name="color_news_4">#7C57C0</color>
+    <color name="color_news_5">#EC6C00 </color>
+    <color name="color_news_6">#249A22</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#cccccc</color>
+
+    <color name="drop_down_selected">#5263FB</color>
+    <color name="drop_down_unselected">#000000</color>
+
+    <color name="mask_color">#88888888</color>
+    <color name="check_bg">#f2f2f2</color>
+
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/articleListBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+  <com.xybst.ui.DropDownMenu
+      android:id="@+id/dropDownMenu"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:ddmenuTextSize="16sp"
+      app:ddtextUnselectedColor="@android:color/black"
+      app:ddtextSelectedColor="@color/colorTheme"
+      app:dddividerColor="@color/gray"
+      app:ddunderlineColor="@color/gray"
+      app:ddmenuSelectedIcon="@drawable/ic_drop_menu_selected"
+      app:ddmenuUnselectedIcon="@drawable/ic_drop_menu_unselected"
+      app:ddmaskColor="@color/mask_color"
+      app:ddmenuBackgroundColor="@color/articleListBackground"/>
+
+</LinearLayout>
+
