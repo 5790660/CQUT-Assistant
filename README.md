@@ -20,4 +20,7 @@ APP下载链接：http://www.wandoujia.com/apps/com.xybst.activity<br />
 使用 PreferenceAcitvity 方便地完成设置界面<br />
 
 ![image](https://github.com/5790660/CQUT-Assistant/blob/master/screenshot/device-2016-03-17-191229.png)
-![image](https://github.com/5790660/CQUT-Assistant/blob/master/screenshot/device-2016-03-17-191229.png)
+![image](https://github.com/5790660/CQUT-Assistant/blob/master/screenshot/device-2016-03-17-191328.png)
+![image](https://github.com/5790660/CQUT-Assistant/blob/master/screenshot/device-2016-03-17-191434.png)
+![image](https://github.com/5790660/CQUT-Assistant/blob/master/screenshot/device-2016-03-17-192405.png)
+![image](https://github.com/5790660/CQUT-Assistant/blob/master/screenshot/device-2016-03-17-192529.png)
