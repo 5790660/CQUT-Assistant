@@ -64,12 +64,10 @@ public class TimetableFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        System.out.println("create");
         super.onCreate(savedInstanceState);
         info = (Info) getActivity().getApplication();
         selectedWeek = info.getCurrentWeek();
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(null);
         toolbar.setTitle(null);
         initWeekSelectView();
 
