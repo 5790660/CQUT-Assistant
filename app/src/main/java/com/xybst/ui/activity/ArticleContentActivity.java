@@ -1,12 +1,10 @@
 package com.xybst.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,15 +12,11 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import com.xybst.activity.R;
-import com.xybst.bean.Article;
 import com.xybst.bean.ArticlesListItem;
-import com.xybst.dao.ArticleListDAO;
 import com.xybst.dao.FavoriteDAO;
 import com.xybst.net.HttpHelper;
 
