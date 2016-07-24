@@ -8,11 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import com.xybst.bean.Course;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by 创宇 on 2016/1/8.
