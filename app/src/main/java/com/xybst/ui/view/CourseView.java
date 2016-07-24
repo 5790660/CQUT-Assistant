@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.widget.Button;
 
 import com.xybst.activity.R;
-import com.xybst.bean.Course;
 
 /**
  * Created by 创宇 on 2015/12/23.
