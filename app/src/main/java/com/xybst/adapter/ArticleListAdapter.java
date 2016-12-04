@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.xybst.activity.R;
@@ -41,7 +43,6 @@ public class ArticleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
         if(getItemViewType(position) == VIEW_TYPE_LIST) {
 
             final ListViewHolder listViewHolder = (ListViewHolder) holder;
@@ -115,11 +116,11 @@ public class ArticleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public class LoadMoreViewHolder extends ViewHolder {
+    private class LoadMoreViewHolder extends ViewHolder {
 
-        public final View mView;
+        private final View mView;
 
-        public LoadMoreViewHolder(View view) {
+        private LoadMoreViewHolder(View view) {
             super(view);
             mView = view;
         }

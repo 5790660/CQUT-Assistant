@@ -33,7 +33,7 @@ public class DropDownMenu extends LinearLayout {
     //tabMenuView里面选中的tab位置，-1表示未选中
     private int current_tab_position = -1;
 
-    //分割线颜色
+     //分割线颜色
     private int dividerColor;
     //tab选中颜色
     private int textSelectedColor;

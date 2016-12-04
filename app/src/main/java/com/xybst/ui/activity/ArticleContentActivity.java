@@ -82,7 +82,7 @@ public class ArticleContentActivity extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.webView);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setTextZoom(120);
+        webSettings.setTextZoom(180);
 
         new LoadArticleTask().execute(item.getLink());
 
@@ -138,7 +138,15 @@ public class ArticleContentActivity extends AppCompatActivity {
             str.append("</body></html>");
             System.out.println(str.toString());
             webView.getSettings().setDefaultTextEncodingName("utf-8");
-            webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+//            webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+//            webView.getSettings().setLoadWithOverviewMode(true);
+//            webView.getSettings().setUseWideViewPort(true);
+//            // 设置支持缩放
+//            webView.getSettings().setSupportZoom(true);
+//            // 设置缩放工具的显示
+//            webView.getSettings().setBuiltInZoomControls(true);
+
+            webView.setInitialScale(180);
             webView.loadDataWithBaseURL("", str.toString(), "text/html", "utf-8", "");
 //                    Toast.makeText(getContext(), "网络连接中断，请检查网络设置！", Toast.LENGTH_SHORT).show();
         }

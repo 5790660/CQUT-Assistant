@@ -40,10 +40,10 @@ import cz.msebera.android.httpclient.message.BasicNameValuePair;
 
 public class GradeFragment extends Fragment {
 
-    private String year = "2015-2016";
-    private String term = "2";
-    private String headers[] = { "2015-2016", "第2学期"};
-    private String years[] = {"2012-2013", "2013-2014", "2014-2015", "2015-2016"};
+    private String year = "2016-2017";
+    private String term = "1";
+    private String headers[] = { "2016-2017", "第1学期"};
+    private String years[] = {"2013-2014", "2014-2015", "2015-2016", "2016-2017"};
     private String terms[] = {"第1学期", "第2学期", "第3学期"};
 
     private List<View> popupViews = new ArrayList<>();

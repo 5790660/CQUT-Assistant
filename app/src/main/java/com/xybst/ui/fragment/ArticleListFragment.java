@@ -281,6 +281,9 @@ public class ArticleListFragment extends Fragment implements ArticleListAdapter.
             m = pTitle.matcher(str);
             if (m.find()) {
                 title = m.group();
+                if (title.contains("&quot;")) {
+                    title = title.replace("&quot;", "\"");
+                }
             }
 
             m = pPublisher.matcher(str);

@@ -89,9 +89,14 @@ public class TimetableFragment extends Fragment {
     private void initView() {
         layout.removeAllViews();
         int size = info.getCourseContainer().size();
+        boolean flag[][][] = new boolean[11][11][11];
         for (int i = 0; i < size; i++) {
             Course course = info.getCourseContainer().get(i);
             if (selectedWeek >= course.getStartWeek() && course.getEndWeek() >= selectedWeek) {
+                if ( ! flag[course.getDayOfWeek()][course.getStartSection()][course.getEndSection()])
+                    flag[course.getDayOfWeek()][course.getStartSection()][course.getEndSection()] = true;
+                else
+                    continue;
                 CourseView view = new CourseView(getContext().getApplicationContext());
                 view.setCourseId(course.getCourseId());
                 view.setStartSection(course.getStartSection());
