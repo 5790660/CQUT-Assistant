@@ -1,4 +1,4 @@
-package com.xybst.adapter;
+package com.xybst.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.xybst.activity.R;
-import com.xybst.utils.Info;
+import com.xybst.util.Info;
 
 /**
  * Created by 创宇 on 2016/1/5.

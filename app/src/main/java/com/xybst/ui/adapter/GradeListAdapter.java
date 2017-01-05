@@ -1,4 +1,4 @@
-package com.xybst.adapter;
+package com.xybst.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

@@ -1,4 +1,4 @@
-package com.xybst.dao;
+package com.xybst.persistence;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.xybst.bean.ArticlesListItem;
+import com.xybst.bean.NewsItem;
+import com.xybst.util.NewsType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,23 +26,23 @@ public class FavoriteDAO {
         db = dbHelper.getWritableDatabase();
     }
 
-    public boolean addFavoriteArticle(ArticlesListItem item) {
+    public boolean addFavoriteArticle(NewsItem item) {
         boolean isSucceed = true;
         System.out.println("add   " + item.getTitle());
         ContentValues values = new ContentValues();
         values.put("title", item.getTitle());
         values.put("link ", item.getLink());
         values.put("publisher", item.getPublisher());
-        values.put("time", item.getTime());
+        values.put("timeTable", item.getTime());
         if (db.insert(TB_NAME, null, values) == -1)
             isSucceed = false;
         return isSucceed;
     }
 
-    public List<ArticlesListItem> getFavoriteArticleList() {
+    public List<NewsItem> getFavoriteArticleList() {
         Cursor cursor = db.query(TB_NAME, null, null, null, null, null, "_id DESC");
         try {
-            List<ArticlesListItem> items = new ArrayList<>();
+            List<NewsItem> items = new ArrayList<>();
             while (cursor.moveToNext()) {
                 items.add(getItem(cursor));
             }
@@ -64,14 +65,14 @@ public class FavoriteDAO {
         return true;
     }
 
-    public ArticlesListItem getItem(Cursor cursor) {
-        ArticlesListItem item = new ArticlesListItem();
-        item.setId(cursor.getInt(cursor.getColumnIndex(ArticlesListItem.ID)));
-        item.setModule(cursor.getString(cursor.getColumnIndex(ArticlesListItem.MODULE )));
-        item.setTitle(cursor.getString(cursor.getColumnIndex(ArticlesListItem.TITLE )));
-        item.setLink(cursor.getString(cursor.getColumnIndex(ArticlesListItem.LINK )));
-        item.setPublisher(cursor.getString(cursor.getColumnIndex(ArticlesListItem.PUBLISHER )));
-        item.setTime(cursor.getString(cursor.getColumnIndex(ArticlesListItem.TIME )));
+    public NewsItem getItem(Cursor cursor) {
+        NewsItem item = new NewsItem();
+        item.setId(cursor.getInt(cursor.getColumnIndex(NewsItem.ID)));
+        item.setType(NewsType.valueOf(cursor.getString(cursor.getColumnIndex(NewsItem.TYPE))));
+        item.setTitle(cursor.getString(cursor.getColumnIndex(NewsItem.TITLE )));
+        item.setLink(cursor.getString(cursor.getColumnIndex(NewsItem.LINK )));
+        item.setPublisher(cursor.getString(cursor.getColumnIndex(NewsItem.PUBLISHER )));
+        item.setTime(cursor.getString(cursor.getColumnIndex(NewsItem.TIME )));
         return item;
     }
 
@@ -85,12 +86,12 @@ public class FavoriteDAO {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE IF NOT EXISTS " +
-                    TB_NAME + "("+ ArticlesListItem.ID + " integer primary key autoincrement," +//
-                    ArticlesListItem.MODULE + " varchar,"+
-                    ArticlesListItem.TITLE +" varchar,"+
-                    ArticlesListItem.LINK +" varchar," +
-                    ArticlesListItem.PUBLISHER +" varchar,"+
-                    ArticlesListItem.TIME + " varchar"+
+                    TB_NAME + "("+ NewsItem.ID + " integer primary key autoincrement," +//
+                    NewsItem.TYPE + " varchar,"+
+                    NewsItem.TITLE +" varchar,"+
+                    NewsItem.LINK +" varchar," +
+                    NewsItem.PUBLISHER +" varchar,"+
+                    NewsItem.TIME + " varchar"+
                     ")");
         }
 

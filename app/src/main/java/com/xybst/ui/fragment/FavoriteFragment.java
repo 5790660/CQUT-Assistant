@@ -13,13 +13,9 @@ import android.widget.ListView;
 
 import com.xybst.ui.activity.ArticleContentActivity;
 import com.xybst.activity.R;
-import com.xybst.adapter.FavoriteAdapter;
-import com.xybst.bean.ArticlesListItem;
+import com.xybst.ui.adapter.FavoriteAdapter;
+import com.xybst.bean.NewsItem;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 // TODO: 2016/1/12
 public class FavoriteFragment extends Fragment {
 
@@ -44,7 +40,7 @@ public class FavoriteFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ArticleContentActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("article",(ArticlesListItem)adapter.getItem(position));
+                bundle.putSerializable("article",(NewsItem)adapter.getItem(position));
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

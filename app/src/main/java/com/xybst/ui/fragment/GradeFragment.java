@@ -19,13 +19,15 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.xybst.activity.R;
-import com.xybst.adapter.GradeListAdapter;
-import com.xybst.adapter.ListDropDownAdapter;
+import com.xybst.ui.adapter.GradeListAdapter;
+import com.xybst.ui.adapter.ListDropDownAdapter;
 import com.xybst.bean.Grade;
-import com.xybst.dao.GradeDAO;
-import com.xybst.net.HttpUtil;
-import com.xybst.utils.Info;
-import com.xybst.ui.DropDownMenu;
+import com.xybst.persistence.GradeDAO;
+import com.xybst.util.CacheLoader;
+import com.xybst.util.Home;
+import com.xybst.util.HttpUtils;
+import com.xybst.util.Info;
+import com.xybst.ui.view.DropDownMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -112,13 +114,13 @@ public class GradeFragment extends Fragment {
         listView.setDivider(null);
         listView.setVerticalScrollBarEnabled(false);
         listView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        if (info.getGradeContainer().isEmpty()) {
+        if (CacheLoader.getGradeCtr().isEmpty()) {
             getItemsFormDB();
         }
         gradeListAdapter = new GradeListAdapter(container.getContext(), getItemsFromContainer(year, term));
         listView.setAdapter(gradeListAdapter);
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, listView);
-        if (info.getGradeContainer().isEmpty()) {
+        if (CacheLoader.getGradeCtr().isEmpty()) {
             initiateRefresh();
         }
         return view;
@@ -165,7 +167,7 @@ public class GradeFragment extends Fragment {
                     for (Grade grade : grades) {
                         System.out.println(grade.toString());
                     }
-                    info.setGradeContainer(grades);
+                    CacheLoader.setGradeCtr(grades);
                     new GradeDAO(getContext()).addGrades(grades);
                     gradeListAdapter.updateData(getItemsFromContainer(year, term));
                     break;
@@ -183,7 +185,7 @@ public class GradeFragment extends Fragment {
 
     public List<Grade> getItemsFromContainer(String year, String term) {
         List<Grade> grades = new ArrayList<>();
-        for (Grade grade : info.getGradeContainer()) {
+        for (Grade grade : CacheLoader.getGradeCtr()) {
             if (year.equals(grade.getYear()) && term.equals(grade.getTerm())) {
                 grades.add(grade);
             }
@@ -193,16 +195,19 @@ public class GradeFragment extends Fragment {
 
     public  void getItemsFormDB() {
         GradeDAO dao = new GradeDAO(getContext());
-        info.setGradeContainer(dao.getGrades());
+        CacheLoader.setGradeCtr(dao.getGrades());
     }
 
     public String getItemsFromWeb() {
-        String stringUrl = HttpUtil.BASE_URL + "/Score";
+        String stringUrl = Home.BASE_URL + "/Score";
         List<NameValuePair> pairList = new ArrayList<>();
         pairList.add(new BasicNameValuePair("studentId", info.getStudentId()));
         pairList.add(new BasicNameValuePair("studentPassword", info.getPassword()));
-        return HttpUtil.get(stringUrl, pairList);
+//        return HttpUtils.get(stringUrl, pairList);
+        return null;
     }
+
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

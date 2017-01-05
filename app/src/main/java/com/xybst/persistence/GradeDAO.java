@@ -1,4 +1,4 @@
-package com.xybst.dao;
+package com.xybst.persistence;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
-import com.xybst.bean.ArticlesListItem;
 import com.xybst.bean.Grade;
 
 import java.util.ArrayList;

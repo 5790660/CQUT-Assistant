@@ -1,4 +1,4 @@
-package com.xybst.adapter;
+package com.xybst.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,31 +8,20 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.xybst.activity.R;
-import com.xybst.bean.ArticlesListItem;
-import com.xybst.dao.FavoriteDAO;
+import com.xybst.bean.NewsItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 创宇 on 2016/3/16.
+ * Created by 创宇 on 2016/1/8.
  */
-public class FavoriteAdapter extends BaseAdapter{
+public class SearchListAdapter extends BaseAdapter{
 
-    private List<ArticlesListItem> items = new ArrayList<>();
-    private LayoutInflater inflater;
-    private FavoriteDAO dao;
+    private List<NewsItem> items = new ArrayList<>();
 
-    public FavoriteAdapter(Context context) {
-        this.inflater = inflater.from(context);
-        dao = new FavoriteDAO(context);
-        items.addAll(dao.getFavoriteArticleList());
-    }
-
-    public void update() {
-        items.clear();
-        items.addAll(dao.getFavoriteArticleList());
-        notifyDataSetChanged();
+    public SearchListAdapter(List<NewsItem> items) {
+        this.items = items;
     }
 
     @Override
@@ -42,7 +31,7 @@ public class FavoriteAdapter extends BaseAdapter{
 
     @Override
     public Object getItem(int position) {
-        return  items.get(position);
+        return null;
     }
 
     @Override
@@ -52,7 +41,8 @@ public class FavoriteAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        view = inflater.inflate(R.layout.item_articlelist, null);
+        view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_articlelist, parent, false);
         ((TextView) view.findViewById(R.id.title)).setText(items.get(position).getTitle());
         ((TextView) view.findViewById(R.id.publisher)).setText(items.get(position).getPublisher());
         ((TextView) view.findViewById(R.id.time)).setText(items.get(position).getTime());

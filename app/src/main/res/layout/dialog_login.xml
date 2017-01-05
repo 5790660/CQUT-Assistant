@@ -23,7 +23,6 @@
                 android:hint="数字化校园密码"
                 android:inputType="textPassword"
                 android:id="@+id/editTextPassword"/>
-        <!--todo: pos and neg button-->
         <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

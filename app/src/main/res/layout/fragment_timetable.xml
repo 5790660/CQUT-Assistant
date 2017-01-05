@@ -205,7 +205,7 @@
                     android:textColor="@color/colorTheme" />
             </LinearLayout>
 
-            <com.xybst.ui.layout.CourseLayout
+            <com.xybst.ui.view.CourseLayout
                 android:id="@+id/courses"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

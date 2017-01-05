@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import com.xybst.activity.R;
 import com.xybst.bean.Course;
-import com.xybst.utils.Info;
+import com.xybst.util.CacheLoader;
+import com.xybst.util.Info;
 
 public class CourseDetailActivity extends AppCompatActivity {
 
@@ -32,9 +33,9 @@ public class CourseDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int courseId = intent.getIntExtra("courseId", 1);
         Info info = (Info) getApplication();
-        int size = info.getCourseContainer().size();
+        int size = CacheLoader.getCourseCtr().size();
         for (int i = 0; i < size ; i++) {
-            Course course = info.getCourseContainer().get(i);
+            Course course = CacheLoader.getCourseCtr().get(i);
             if (courseId == course.getCourseId()) {
                 ((TextView) findViewById(R.id.courseName)).setText(course.getCourseName());
                 ((TextView) findViewById(R.id.classroom)).setText(course.getClassroom());

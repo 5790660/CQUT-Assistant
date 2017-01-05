@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.Window;
 
 import com.xybst.activity.R;
-import com.xybst.utils.Info;
+import com.xybst.util.Info;
 
 public class WelcomeActivity extends Activity {
 

@@ -1,4 +1,4 @@
-package com.xybst.dao;
+package com.xybst.persistence;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.xybst.ui.layout;
+package com.xybst.ui.view;
 
 import android.content.Context;
 import android.graphics.Rect;

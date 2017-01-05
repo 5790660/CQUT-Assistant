@@ -1,4 +1,4 @@
-package com.xybst.ui;
+package com.xybst.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

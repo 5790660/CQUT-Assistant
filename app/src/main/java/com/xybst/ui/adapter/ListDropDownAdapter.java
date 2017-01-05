@@ -1,4 +1,4 @@
-package com.xybst.adapter;
+package com.xybst.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 
 import com.xybst.activity.R;
-import com.xybst.bean.ArticlesListItem;
 
 import java.util.List;
 

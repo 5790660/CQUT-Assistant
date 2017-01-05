@@ -1,15 +1,13 @@
-package com.xybst.utils;
+package com.xybst.util;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.xybst.bean.ArticlesListItem;
 import com.xybst.bean.Course;
 import com.xybst.bean.Grade;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,12 +15,18 @@ import java.util.List;
  */
 public class Info extends Application{
 
+    public static Info instance;
+
+    public static Info getInstance() {
+        return instance;
+    }
+
+    public Info() {
+        instance = this;
+    }
+
     public static final String PREFERENCES_USER_INFO = "userInfo";
     public static final String PREFERENCES_SETTING = "setting";
-
-    private HashMap<String, List<ArticlesListItem	>> articleListContainer = new HashMap<>();
-    private List<Grade> gradeContainer = new ArrayList<>();
-    private List<Course> courseContainer = new ArrayList<>();
 
     private int currentWeek;
     private String studentName;
@@ -69,30 +73,6 @@ public class Info extends Application{
 
     public void setStudentName(String studentName) {
         this.studentName = studentName;
-    }
-
-    public HashMap<String, List<ArticlesListItem>> getArticleListContainer() {
-        return articleListContainer;
-    }
-
-    public void setArticleListContainer(HashMap<String, List<ArticlesListItem>> articleListContainer) {
-        this.articleListContainer = articleListContainer;
-    }
-
-    public List<Course> getCourseContainer() {
-        return courseContainer;
-    }
-
-    public void setCourseContainer(List<Course> courseContainer) {
-        this.courseContainer = courseContainer;
-    }
-
-    public List<Grade> getGradeContainer() {
-        return gradeContainer;
-    }
-
-    public void setGradeContainer(List<Grade> gradeContainer) {
-        this.gradeContainer = gradeContainer;
     }
 
     @Override

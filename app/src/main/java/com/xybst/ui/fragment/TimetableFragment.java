@@ -14,14 +14,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.xybst.dao.CourseDAO;
-import com.xybst.net.HttpUtil;
+import com.xybst.persistence.CourseDAO;
 import com.xybst.ui.activity.CourseDetailActivity;
 import com.xybst.activity.R;
 import com.xybst.bean.Course;
-import com.xybst.utils.Info;
-import com.xybst.ui.SelectWeekDialog;
-import com.xybst.ui.layout.CourseLayout;
+import com.xybst.util.CacheLoader;
+import com.xybst.util.Info;
+import com.xybst.ui.view.SelectWeekDialog;
+import com.xybst.ui.view.CourseLayout;
 import com.xybst.ui.view.CourseView;
 
 import org.json.JSONArray;
@@ -33,9 +33,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import cz.msebera.android.httpclient.NameValuePair;
-import cz.msebera.android.httpclient.message.BasicNameValuePair;
 
 public class TimetableFragment extends Fragment {
 
@@ -77,7 +74,7 @@ public class TimetableFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timetable, container, false);
         layout = (CourseLayout) view.findViewById(R.id.courses);
-        if (info.getCourseContainer().isEmpty()) {
+        if (CacheLoader.getCourseCtr().isEmpty()) {
             progressDialog = ProgressDialog.show(getContext(), null, "获取课表中……");
             new BackgroundTask().execute();
         } else {
@@ -88,10 +85,10 @@ public class TimetableFragment extends Fragment {
 
     private void initView() {
         layout.removeAllViews();
-        int size = info.getCourseContainer().size();
+        int size = CacheLoader.getCourseCtr().size();
         boolean flag[][][] = new boolean[11][11][11];
         for (int i = 0; i < size; i++) {
-            Course course = info.getCourseContainer().get(i);
+            Course course = CacheLoader.getCourseCtr().get(i);
             if (selectedWeek >= course.getStartWeek() && course.getEndWeek() >= selectedWeek) {
                 if ( ! flag[course.getDayOfWeek()][course.getStartSection()][course.getEndSection()])
                     flag[course.getDayOfWeek()][course.getStartSection()][course.getEndSection()] = true;
@@ -162,25 +159,26 @@ public class TimetableFragment extends Fragment {
 
     public void loadCoursesFromDB() {
         CourseDAO dbManage = new CourseDAO(getContext());
-        info.setCourseContainer(dbManage.getAllCourses());
+        CacheLoader.setCourseCtr(dbManage.getAllCourses());
     }
 
     public void loadCoursesFromWeb(String studentId, String password) {
-        String stringUrl = HttpUtil.BASE_URL + "/Course";
+        // TODO: 2017/1/4
+/*        String stringUrl = HttpUtils.BASE_URL + "/Course";
         List<NameValuePair> pairList = new ArrayList<>();
         pairList.add(new BasicNameValuePair("studentId", studentId));
         pairList.add(new BasicNameValuePair("studentPassword", password));
         try {
-            JSONObject jsonObject = new JSONObject(HttpUtil.get(stringUrl, pairList));
+            JSONObject jsonObject = new JSONObject(HttpUtils.doGet(stringUrl, pairList));
             info.setCourseContainer(getCourseList(jsonObject.getString("result")));
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public void saveCoursesInfo() {
         CourseDAO dbManage = new CourseDAO(getContext());
-        if(dbManage.addAllCourses(info.getCourseContainer())) {
+        if(dbManage.addAllCourses(CacheLoader.getCourseCtr())) {
             System.out.println("write courseDB successful");
         } else {
             System.out.println("write courseDB unsuccessful");
@@ -189,7 +187,7 @@ public class TimetableFragment extends Fragment {
     }
 
     public static List<Course> getCourseList(String rawJsonResponse) throws JSONException {
-        //{"courseName":"操作系统原理及应用 ","teacherName":"张金荣(张金荣)","classRoom":"6教0306","time":"周一第1,2节{第12-13周}"}
+        //{"courseName":"操作系统原理及应用 ","teacherName":"张金荣(张金荣)","classRoom":"6教0306","timeTable":"周一第1,2节{第12-13周}"}
         List<Course> courses = new ArrayList<>();
 
         //周三第9,10节{第9-9周|单周}
@@ -207,7 +205,7 @@ public class TimetableFragment extends Fragment {
             String courseName = jsonObject.getString("courseName");
             String teacherName = jsonObject.getString("teacherName");
             String classroom = jsonObject.getString("classRoom");
-            String time = jsonObject.getString("time");
+            String time = jsonObject.getString("timeTable");
             int singleDoubleWeek = 0;
             if (time.contains("单周")) {
                 singleDoubleWeek = 1;

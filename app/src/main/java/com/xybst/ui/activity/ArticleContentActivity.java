@@ -16,9 +16,9 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.xybst.activity.R;
-import com.xybst.bean.ArticlesListItem;
-import com.xybst.dao.FavoriteDAO;
-import com.xybst.net.HttpHelper;
+import com.xybst.bean.NewsItem;
+import com.xybst.persistence.FavoriteDAO;
+import com.xybst.util.HttpUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class ArticleContentActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(navListener);
 
         Intent intent = getIntent();
-        final ArticlesListItem item = (ArticlesListItem) intent.getSerializableExtra("article");
+        final NewsItem item = (NewsItem) intent.getSerializableExtra("article");
         getSupportActionBar().setTitle(item.getTitle());
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -155,7 +155,7 @@ public class ArticleContentActivity extends AppCompatActivity {
     public void loadArticleFromWeb(final String stringUrl) {
 
         System.out.println("url  " + stringUrl);
-        HttpHelper.get(stringUrl, new AsyncHttpResponseHandler() {
+        HttpUtils.get(stringUrl, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

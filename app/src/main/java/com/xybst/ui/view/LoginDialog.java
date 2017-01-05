@@ -1,4 +1,4 @@
-package com.xybst.ui;
+package com.xybst.ui.view;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -12,18 +12,17 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.xybst.activity.R;
 import com.xybst.bean.Course;
 import com.xybst.bean.Grade;
-import com.xybst.dao.CourseDAO;
-import com.xybst.dao.GradeDAO;
-import com.xybst.net.HttpUtil;
+import com.xybst.persistence.CourseDAO;
+import com.xybst.persistence.GradeDAO;
 import com.xybst.ui.fragment.TimetableFragment;
-import com.xybst.utils.Info;
+import com.xybst.util.CacheLoader;
+import com.xybst.util.Info;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,14 +31,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.msebera.android.httpclient.NameValuePair;
-import cz.msebera.android.httpclient.message.BasicNameValuePair;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LoginDialog extends DialogFragment {
 
-    private EditText etStudentId, etPassword;
-    private ProgressDialog progressDialog;
-    private Info info;
+    @BindView(R.id.editTextId)
+    EditText etStudentId;
+    @BindView(R.id.editTextPassword)
+    EditText etPassword;
+    ProgressDialog progressDialog;
+    Info info;
 
     public static LoginDialog newInstance(){
         return new LoginDialog();
@@ -50,34 +53,35 @@ public class LoginDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View view = layoutInflater.inflate(R.layout.dialog_login, null);
+        ButterKnife.bind(this, view);
         info = (Info) getActivity().getApplication();
-        etStudentId = (EditText) view.findViewById(R.id.editTextId);
-        etPassword = (EditText) view.findViewById(R.id.editTextPassword);
-        Button btnCancel = (Button) view.findViewById(R.id.btnCancel);
-        Button btnLogin = (Button) view.findViewById(R.id.btnLogin);
-        btnCancel.setOnClickListener(btnListener);
-        btnLogin.setOnClickListener(btnListener);
         return new AlertDialog.Builder(getContext()).setTitle("  登录").setView(view).create();
-
     }
-    
-    View.OnClickListener btnListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v.getId() == R.id.btnCancel) {
-                getDialog().dismiss();
-            } else if (v.getId() == R.id.btnLogin && isPasswordValid(etPassword.getText().toString())) {
-                progressDialog = ProgressDialog.show(getContext(), null, "登录中，请稍后……");
-                new LoginTask().execute();
-            }
-        }
-    };
 
-    public class LoginTask extends AsyncTask<Void, Void, String> {
+    @OnClick(R.id.btnLogin)
+    public void login(){
+        if (isPasswordValid(etPassword.getText().toString())) {
+            progressDialog = ProgressDialog.show(getContext(), null, "登录中，请稍后……");
+            new LoginTask().execute();
+        }
+    }
+
+    @OnClick(R.id.btnCancel)
+    public void cancel(){
+        getDialog().dismiss();
+    }
+
+    private class LoginTask extends AsyncTask<Void, Void, String> {
 
         @Override
         protected String doInBackground(Void... params) {
-            return login();
+            // TODO: 2017/1/4
+      /*      String stringUrl = HttpUtils.BASE_URL + "/ALL";
+            List<NameValuePair> pairList = new ArrayList<>();
+            pairList.add(new BasicNameValuePair("studentId", etStudentId.getText().toString()));
+            pairList.add(new BasicNameValuePair("studentPassword", etPassword.getText().toString()));
+            return HttpUtils.doGet(stringUrl, pairList);*/
+      return null;
         }
 
        @Override
@@ -108,11 +112,11 @@ public class LoginDialog extends DialogFragment {
                         grades.add(new Grade(object.getString("className"), object.getString("credit"), object.getString("point"),
                                 object.getString("grade"), object.getString("stuPeriod"), object.getString("stuYear")));
                     }
-                    info.setGradeContainer(grades);
+                    CacheLoader.setGradeCtr(grades);
                     new GradeDAO(getContext()).addGrades(grades);
                     //获取课表
                     List<Course> courses = TimetableFragment.getCourseList(jsonObject.getString("course"));
-                    info.setCourseContainer(courses);
+                    CacheLoader.setCourseCtr(courses);
                     new CourseDAO(getContext()).addAllCourses(courses);
 
                     getDialog().dismiss();
@@ -146,14 +150,6 @@ public class LoginDialog extends DialogFragment {
         info.setStudentId(etStudentId.getText().toString());
         info.setPassword(etPassword.getText().toString());
         info.setStudentName(studentName);
-    }
-
-    public String login() {
-        String stringUrl = HttpUtil.BASE_URL + "/ALL";
-        List<NameValuePair> pairList = new ArrayList<>();
-        pairList.add(new BasicNameValuePair("studentId", etStudentId.getText().toString()));
-        pairList.add(new BasicNameValuePair("studentPassword", etPassword.getText().toString()));
-        return HttpUtil.get(stringUrl, pairList);
     }
 
     private boolean isPasswordValid(String password) {

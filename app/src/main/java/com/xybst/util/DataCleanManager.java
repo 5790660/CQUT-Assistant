@@ -1,4 +1,4 @@
-package com.xybst.utils;
+package com.xybst.util;
 
 import java.io.File;
 
@@ -7,8 +7,8 @@ import android.content.Context;
 import android.os.Environment;
 import android.widget.Toast;
 import com.xybst.activity.R;
-import com.xybst.dao.CourseDAO;
-import com.xybst.dao.GradeDAO;
+import com.xybst.persistence.CourseDAO;
+import com.xybst.persistence.GradeDAO;
 
 /** * 本应用数据清除管理器 */
 public class DataCleanManager {
@@ -18,8 +18,8 @@ public class DataCleanManager {
         DataCleanManager.cleanDatabaseByName(context, GradeDAO.TB_NAME);
         DataCleanManager.cleanSharedPreference(context);
         Info info = (Info) ((Activity)context).getApplication();
-        info.getGradeContainer().clear();
-        info.getCourseContainer().clear();
+        CacheLoader.getGradeCtr().clear();
+        CacheLoader.getCourseCtr().clear();
         info.setStudentName(null);
         info.setStudentId(null);
         info.setPassword(null);

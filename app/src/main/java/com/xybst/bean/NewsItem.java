@@ -1,56 +1,50 @@
 package com.xybst.bean;
 
+import com.xybst.util.NewsType;
+
 import java.io.Serializable;
 
 /**
  * 新闻列表
  * Created by 创宇 on 2015/12/5.
  */
-public class ArticlesListItem implements Serializable{
+public class NewsItem implements Serializable{
 
     public static final String ID = "_id";
-    public static final String MODULE = "module";
+    public static final String TYPE = "type";
     public static final String TITLE = "title";
     public static final String LINK = "link";
     public static final String PUBLISHER = "publisher";
-    public static final String TIME = "time";
+    public static final String TIME = "timeTable";
 
     private int id;
-    private String module;
+    private NewsType type;
     private String title;
     private String link;
     private String publisher;
     private String time;
 
-    public ArticlesListItem() {
-
+    public NewsItem() {
     }
 
-    public ArticlesListItem(Article article) {
-        this.link = article.getLink();
-        this.publisher = article.getPublisher();
-        this.time = article.getCreateTime();
-        this.title = article.getTitle();
-    }
-
-    public ArticlesListItem(int id, String link, String module, String publisher, String time, String title) {
+    public NewsItem(int id, NewsType type, String title, String link, String publisher, String time) {
         this.id = id;
+        this.type = type;
+        this.title = title;
         this.link = link;
-        this.module = module;
         this.publisher = publisher;
         this.time = time;
-        this.title = title;
     }
 
-      @Override
+    @Override
     public String toString() {
-        return "ArticlesListItem{" +
+        return "NewsItem{" +
                 "id=" + id +
-                ", module='" + module + '\'' +
+                ", type='" + type + '\'' +
                 ", title='" + title + '\'' +
                 ", link='" + link + '\'' +
                 ", publisher='" + publisher + '\'' +
-                ", time='" + time + '\'' +
+                ", timeTable='" + time + '\'' +
                 '}';
     }
 
@@ -62,20 +56,28 @@ public class ArticlesListItem implements Serializable{
         this.id = id;
     }
 
+    public NewsType getType() {
+        return type;
+    }
+
+    public void setType(NewsType type) {
+        this.type = type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getLink() {
         return link;
     }
 
     public void setLink(String link) {
         this.link = link;
-    }
-
-    public String getModule() {
-        return module;
-    }
-
-    public void setModule(String module) {
-        this.module = module;
     }
 
     public String getPublisher() {
@@ -92,14 +94,6 @@ public class ArticlesListItem implements Serializable{
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 }
 

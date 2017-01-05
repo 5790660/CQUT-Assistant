@@ -1,4 +1,4 @@
-package com.xybst.adapter;
+package com.xybst.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,22 +8,31 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.xybst.activity.R;
-import com.xybst.bean.ArticlesListItem;
-import com.xybst.bean.Grade;
+import com.xybst.bean.NewsItem;
+import com.xybst.persistence.FavoriteDAO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 创宇 on 2016/1/8.
+ * Created by 创宇 on 2016/3/16.
  */
-public class SearchListAdapter extends BaseAdapter{
-    private List<ArticlesListItem> items = new ArrayList<>();
-    private LayoutInflater inflater;
+public class FavoriteAdapter extends BaseAdapter{
 
-    public SearchListAdapter(Context context, List<ArticlesListItem> list) {
+    private List<NewsItem> items = new ArrayList<>();
+    private LayoutInflater inflater;
+    private FavoriteDAO dao;
+
+    public FavoriteAdapter(Context context) {
         this.inflater = inflater.from(context);
-        items.addAll(list);
+        dao = new FavoriteDAO(context);
+        items.addAll(dao.getFavoriteArticleList());
+    }
+
+    public void update() {
+        items.clear();
+        items.addAll(dao.getFavoriteArticleList());
+        notifyDataSetChanged();
     }
 
     @Override
@@ -33,7 +42,7 @@ public class SearchListAdapter extends BaseAdapter{
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return  items.get(position);
     }
 
     @Override

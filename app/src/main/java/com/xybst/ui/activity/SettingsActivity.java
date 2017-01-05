@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.xybst.activity.R;
-import com.xybst.utils.Info;
+import com.xybst.util.Info;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 

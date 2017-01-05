@@ -1,4 +1,4 @@
-package com.xybst.ui;
+package com.xybst.ui.view;
 
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -16,8 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.xybst.activity.R;
-import com.xybst.adapter.SelectWeekDialogAdapter;
-import com.xybst.utils.Info;
+import com.xybst.ui.adapter.SelectWeekDialogAdapter;
+import com.xybst.util.Info;
 
 /**
  * Created by 创宇 on 2016/1/4.
