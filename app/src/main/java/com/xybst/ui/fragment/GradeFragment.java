@@ -25,9 +25,9 @@ import com.xybst.bean.Grade;
 import com.xybst.persistence.GradeDAO;
 import com.xybst.util.CacheLoader;
 import com.xybst.util.Home;
-import com.xybst.util.HttpUtils;
-import com.xybst.util.Info;
 import com.xybst.ui.view.DropDownMenu;
+import com.xybst.util.Info;
+import com.xybst.util.TimeUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,20 +42,17 @@ import cz.msebera.android.httpclient.message.BasicNameValuePair;
 
 public class GradeFragment extends Fragment {
 
-    private String year = "2016-2017";
-    private String term = "1";
-    private String headers[] = { "2016-2017", "第1学期"};
-    private String years[] = {"2013-2014", "2014-2015", "2015-2016", "2016-2017"};
-    private String terms[] = {"第1学期", "第2学期", "第3学期"};
+    private String headers[] = TimeUtils.getCurTerm();
+    private String years[] = TimeUtils.getSchoolYear();
+    private String terms[] = TimeUtils.getTerms();
+    private String year = TimeUtils.getCurTerm()[0];
+    private String term = TimeUtils.getCurTerm()[1];
 
     private List<View> popupViews = new ArrayList<>();
-    private Info info;
-    private GradeListAdapter gradeListAdapter;
-    private ProgressDialog progressDialog;
 
-    public GradeFragment() {
-        // Required empty public constructor
-    }
+    private GradeListAdapter gradeListAdapter= new GradeListAdapter();
+
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,15 +68,16 @@ public class GradeFragment extends Fragment {
         setHasOptionsMenu(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.inquiry);
 
-        info = (Info) getActivity().getApplication();
         View view = inflater.inflate(R.layout.fragment_inquiry, container, false);
         final DropDownMenu mDropDownMenu = (DropDownMenu) view.findViewById(R.id.dropDownMenu);
+        ListView gradeList = (ListView) view.findViewById(R.id.gradeList);
 
         final ListView yearView = new ListView(getActivity());
         yearView.setDividerHeight(0);
         final ListDropDownAdapter yearAdapter = new ListDropDownAdapter(getActivity(), Arrays.asList(years));
         yearAdapter.setCheckItem(years.length - 1);
         yearView.setAdapter(yearAdapter);
+
         yearView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -87,7 +85,7 @@ public class GradeFragment extends Fragment {
                 mDropDownMenu.setTabText(years[position]);
                 mDropDownMenu.closeMenu();
                 year = years[position];
-                gradeListAdapter.updateData(getItemsFromContainer(year, term));
+                gradeListAdapter.updateData(getItemsFromCtr(year, term));
             }
         });
 
@@ -96,6 +94,7 @@ public class GradeFragment extends Fragment {
         final ListDropDownAdapter termAdapter = new ListDropDownAdapter(getActivity(), Arrays.asList(terms));
         termAdapter.setCheckItem(Integer.valueOf(term) - 1);
         termView.setAdapter(termAdapter);
+
         termView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -103,26 +102,18 @@ public class GradeFragment extends Fragment {
                 mDropDownMenu.setTabText(terms[position]);
                 mDropDownMenu.closeMenu();
                 term = String.valueOf(position + 1);
-                gradeListAdapter.updateData(getItemsFromContainer(year, term));
+                gradeListAdapter.updateData(getItemsFromCtr(year, term));
             }
         });
 
         popupViews.add(yearView);
         popupViews.add(termView);
 
-        ListView listView = new ListView(getActivity());
-        listView.setDivider(null);
-        listView.setVerticalScrollBarEnabled(false);
-        listView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        if (CacheLoader.getGradeCtr().isEmpty()) {
-            getItemsFormDB();
-        }
-        gradeListAdapter = new GradeListAdapter(container.getContext(), getItemsFromContainer(year, term));
-        listView.setAdapter(gradeListAdapter);
-        mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, listView);
-        if (CacheLoader.getGradeCtr().isEmpty()) {
-            initiateRefresh();
-        }
+        gradeList.setVerticalScrollBarEnabled(false);
+        gradeList.setAdapter(gradeListAdapter);
+
+        mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, gradeList);
+
         return view;
     }
 
@@ -169,7 +160,7 @@ public class GradeFragment extends Fragment {
                     }
                     CacheLoader.setGradeCtr(grades);
                     new GradeDAO(getContext()).addGrades(grades);
-                    gradeListAdapter.updateData(getItemsFromContainer(year, term));
+                    gradeListAdapter.updateData(getItemsFromCtr(year, term));
                     break;
                 case 400:
                     Toast.makeText(getContext(), "教务系统暂时不可用", Toast.LENGTH_SHORT).show();
@@ -183,7 +174,7 @@ public class GradeFragment extends Fragment {
         }
     }
 
-    public List<Grade> getItemsFromContainer(String year, String term) {
+    public List<Grade> getItemsFromCtr(String year, String term) {
         List<Grade> grades = new ArrayList<>();
         for (Grade grade : CacheLoader.getGradeCtr()) {
             if (year.equals(grade.getYear()) && term.equals(grade.getTerm())) {
@@ -201,11 +192,13 @@ public class GradeFragment extends Fragment {
     public String getItemsFromWeb() {
         String stringUrl = Home.BASE_URL + "/Score";
         List<NameValuePair> pairList = new ArrayList<>();
-        pairList.add(new BasicNameValuePair("studentId", info.getStudentId()));
-        pairList.add(new BasicNameValuePair("studentPassword", info.getPassword()));
+        pairList.add(new BasicNameValuePair("studentId", Info.getInstance().getStudentId()));
+        pairList.add(new BasicNameValuePair("studentPassword", Info.getInstance().getPassword()));
 //        return HttpUtils.get(stringUrl, pairList);
         return null;
     }
+
+
 
 
 

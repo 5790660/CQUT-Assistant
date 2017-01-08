@@ -18,6 +18,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.xybst.activity.R;
 import com.xybst.bean.NewsItem;
 import com.xybst.persistence.FavoriteDAO;
+import com.xybst.util.HtmlUtils;
 import com.xybst.util.HttpUtils;
 
 import java.io.ByteArrayInputStream;
@@ -39,7 +40,6 @@ public class ArticleContentActivity extends AppCompatActivity {
     };
 
     WebView webView;
-    InputStream inputStream;
     boolean favoriteStatus = false;
 
     @Override
@@ -75,7 +75,6 @@ public class ArticleContentActivity extends AppCompatActivity {
                     dao.addFavoriteArticle(item);
                     favoriteStatus = true;
                 }
-                System.out.println(item.toString());
             }
         });
 
@@ -84,84 +83,24 @@ public class ArticleContentActivity extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setTextZoom(180);
 
-        new LoadArticleTask().execute(item.getLink());
-
-        webView.setWebViewClient(new WebViewClient() {
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-            }
-
-            @Override
-            public void onLoadResource(WebView view, String url) {
-                super.onLoadResource(view, url);
-            }
-
-        });
-    }
-
-    private class LoadArticleTask extends AsyncTask<String, Void, Void> {
-
-        String stringUrl;
-        // TODO: 2016/3/16
-        boolean isConnection = true;
-
-        @Override
-        protected Void doInBackground(String... params) {
-            stringUrl = params[0];
-            try {
-                loadArticleFromWeb(stringUrl);
-            } catch (IllegalThreadStateException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-            super.onPostExecute(v);
-            StringBuilder str = new StringBuilder();
-            str.append("<html><head><meta content=\"text/html; charset=utf-8\" http-equiv=content-type></head><body>");
-            str.append(parse());
-            str.append("</body></html>");
-            System.out.println(str.toString());
-            webView.getSettings().setDefaultTextEncodingName("utf-8");
-//            webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-//            webView.getSettings().setLoadWithOverviewMode(true);
-//            webView.getSettings().setUseWideViewPort(true);
-//            // 设置支持缩放
-//            webView.getSettings().setSupportZoom(true);
-//            // 设置缩放工具的显示
-//            webView.getSettings().setBuiltInZoomControls(true);
-
-            webView.setInitialScale(180);
-            webView.loadDataWithBaseURL("", str.toString(), "text/html", "utf-8", "");
-//                    Toast.makeText(getContext(), "网络连接中断，请检查网络设置！", Toast.LENGTH_SHORT).show();
-        }
+        loadArticleFromWeb(item.getLink());
     }
 
     public void loadArticleFromWeb(final String stringUrl) {
-
-        System.out.println("url  " + stringUrl);
         HttpUtils.get(stringUrl, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
                 Log.i("conn", "success");
-                inputStream = new ByteArrayInputStream(responseBody);
+
+                InputStream input = new ByteArrayInputStream(responseBody);
+                StringBuilder str = new StringBuilder();
+                str.append("<html><head><meta content=\"text/html; charset=utf-8\" http-equiv=content-type></head><body>");
+                str.append(HtmlUtils.parseArticle(input));
+                str.append("</body></html>");
+                webView.getSettings().setDefaultTextEncodingName("utf-8");
+                webView.setInitialScale(180);
+                webView.loadDataWithBaseURL("", str.toString(), "text/html", "utf-8", "");
             }
 
             @Override
@@ -169,37 +108,5 @@ public class ArticleContentActivity extends AppCompatActivity {
                 Log.i("conn", "failure");
             }
         });
-    }
-
-    public String parse() {
-        String content = null;
-        StringBuilder buff = new StringBuilder();
-        String html;
-
-        Scanner scanner = new Scanner(inputStream);
-        while (scanner.hasNextLine()) {
-            buff.append(scanner.nextLine());
-        }
-
-        html = buff.toString();
-
-        try {
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Pattern p;
-        Matcher m;
-        String regEx;
-
-        regEx = "(?<=<div class=\"content\".).*(?=</div>\\s*<div class=\"memo\">)";
-        p = Pattern.compile(regEx);
-        m = p.matcher(html);
-        if (m.find()) {
-            content = m.group();
-            System.out.println("con "+content);
-        }
-        return content;
     }
 }

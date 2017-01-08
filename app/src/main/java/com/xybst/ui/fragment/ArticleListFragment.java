@@ -149,10 +149,4 @@ public class ArticleListFragment extends Fragment implements
         intent.putExtras(bundle);
         startActivity(intent);
     }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-//        mRefreshLayout.removeCallbacks(runnable);
-    }
 }

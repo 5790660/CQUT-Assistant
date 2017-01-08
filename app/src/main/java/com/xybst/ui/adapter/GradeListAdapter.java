@@ -21,16 +21,9 @@ import java.util.List;
 public class GradeListAdapter extends BaseAdapter{
 
     private List<Grade> items = new ArrayList<>();
-    private LayoutInflater inflater;
-
-    public GradeListAdapter(Context context, List<Grade> grades) {
-        this.inflater = inflater.from(context);
-        items.addAll(grades);
-    }
 
     public void updateData(List<Grade> grades) {
-        items.clear();
-        items.addAll(grades);
+        items = grades;
         notifyDataSetChanged();
     }
 
@@ -51,7 +44,7 @@ public class GradeListAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        view = inflater.inflate(R.layout.item_gradelist, null);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gradelist, null);
         ((TextView) view.findViewById(R.id.tvCourseName)).append(items.get(position).getCourseName());
         ((TextView) view.findViewById(R.id.tvCredit)).append(items.get(position).getCredit());
         ((TextView) view.findViewById(R.id.tvGradePoint)).append(items.get(position).getPoint());

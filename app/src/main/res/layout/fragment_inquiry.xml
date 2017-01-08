@@ -20,5 +20,11 @@
       app:ddmaskColor="@color/mask_color"
       app:ddmenuBackgroundColor="@color/articleListBackground"/>
 
+  <ListView
+      android:id="@+id/gradeList"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:divider="@null"/>
+
 </LinearLayout>
 
